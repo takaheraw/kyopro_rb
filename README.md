@@ -5,7 +5,7 @@
 
 | 章 | タイトル | 解答 |
 |:---|:---|:---|
-| 1 章 | アルゴリズムと計算量 | [chapter01]() |
+| 1 章 | アルゴリズムと計算量 | [chapter01](https://github.com/takaheraw/kyopro_rb/tree/main/codes/ruby/chapter01) |
 | 2 章 | 累積和 | |
 | 3 章 | 二分探索 | | 
 | 4 章 | 動的計画法 | |
