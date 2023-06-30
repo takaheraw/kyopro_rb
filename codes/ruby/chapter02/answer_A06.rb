@@ -1,17 +1,24 @@
-N, Q = gets.split.map(&:to_i)
-A = gets.split.map(&:to_i)
-L = Array.new(Q)
-R = Array.new(Q)
-for j in 0...Q
-	L[j], R[j] = gets.split.map(&:to_i)
+# n: N日にわたるイベント
+# q: Q個の質問
+n, q = gets.split.map(&:to_i)
+
+# a: A人が来場
+a = gets.split.map(&:to_i)
+
+# l: L日目
+l = []
+# r: R日目
+r = []
+for j in 0...q
+	l[j], r[j] = gets.split.map(&:to_i)
 end
 
-S = Array.new(N + 1)
-S[0] = 0
-for i in 0...N
-	S[i + 1] = S[i] + A[i]
+s = Array.new(n + 1)
+s[0] = 0
+for i in 0...n
+	s[i + 1] = s[i] + a[i]
 end
 
-for j in 0...Q
-	puts S[R[j]] - S[L[j] - 1]
+for j in 0...q
+	puts s[r[j]] - s[l[j] - 1]
 end
