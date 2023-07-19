@@ -1,17 +1,16 @@
 # 入力
-N, M, B = gets.chomp.split.map(&:to_i)
-A = gets.chomp.split.map(&:to_i)
-C = gets.chomp.split.map(&:to_i)
+n, m, b = gets.split.map(&:to_i)
+a = gets.split.map(&:to_i)
+c = gets.split.map(&:to_i)
 
-# 答えの計算
-Answer = 0
-N.times do |i|
-  Answer += A[i] * M
+answer = 0
+a.each do |ai|
+  answer += ai * m
 end
-Answer += B * N * M
-M.times do |j|
-  Answer += C[j] * N
+answer += b * n * m
+c.each do |cj|
+  answer += cj * n
 end
 
 # 出力
-puts Answer
+puts answer
