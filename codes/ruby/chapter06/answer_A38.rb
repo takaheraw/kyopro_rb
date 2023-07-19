@@ -1,26 +1,23 @@
 # 入力
-D, N = gets.chomp.split.map(&:to_i)
-L, R, H = [], [], []
-N.times do
-  l, r, h = gets.chomp.split.map(&:to_i)
-  L << l
-  R << r
-  H << h
+d, n = gets.split.map(&:to_i)
+l, r, h = [], [], []
+n.times do
+  li, ri, hi = gets.split.map(&:to_i)
+  l << li
+  r << ri
+  h << hi
 end
 
 # 配列の初期化（1 日は 24 時間）
-LIM = [24] * (D + 1)
+lim = Array.new(d + 1, 24)
 
 # 上限値を求める
-N.times do |i|
-  (L[i]..R[i]).each do |j|
-    LIM[j] = [LIM[j], H[i]].min
+n.times do |i|
+  (l[i]..r[i]).each do |j|
+    lim[j] = [lim[j], h[i]].min
   end
 end
 
 # 答えを出力
-Answer = 0
-(1..D).each do |i|
-  Answer += LIM[i]
-end
-puts Answer
+answer = lim[1..d].sum
+puts answer
