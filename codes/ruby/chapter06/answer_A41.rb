@@ -1,16 +1,19 @@
 # 入力
-N = gets.chomp.to_i
-S = gets.chomp
+n = gets.to_i
+s = gets.chomp
 
-# 答えを求める
-Answer = false
-(0..N-3).each do |i|
-  Answer = true if S[i] == 'R' && S[i + 1] == 'R' && S[i + 2] == 'R'
-  Answer = true if S[i] == 'B' && S[i + 1] == 'B' && S[i + 2] == 'B'
+answer = false
+(0..n-3).each do |i|
+  if s[i] == 'R' && s[i+1] == 'R' && s[i+2] == 'R'
+    answer = true
+  end
+  if s[i] == 'B' && s[i+1] == 'B' && s[i+2] == 'B'
+    answer = true
+  end
 end
 
 # 出力
-if Answer
+if answer
   puts "Yes"
 else
   puts "No"
