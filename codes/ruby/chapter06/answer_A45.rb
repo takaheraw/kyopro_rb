@@ -1,28 +1,27 @@
 # 入力
-N, C = gets.chomp.split
-A = gets.chomp
-N = N.to_i
+n, c = gets.chomp.split
+a = gets.chomp
+n = n.to_i
 
 # スコアの計算
 score = 0
-N.times do |i|
-  case A[i]
-  when 'W'
+n.times do |i|
+  if a[i] == 'W'
     score += 0
-  when 'B'
+  elsif a[i] == 'B'
     score += 1
-  when 'R'
+  elsif a[i] == 'R'
     score += 2
   end
 end
 
 # 出力
-if score % 3 == 0 && C == 'W'
-  puts "Yes"
-elsif score % 3 == 1 && C == 'B'
-  puts "Yes"
-elsif score % 3 == 2 && C == 'R'
-  puts "Yes"
+if score % 3 == 0 && c == 'W'
+  puts 'Yes'
+elsif score % 3 == 1 && c == 'B'
+  puts 'Yes'
+elsif score % 3 == 2 && c == 'R'
+  puts 'Yes'
 else
-  puts "No"
+  puts 'No'
 end
