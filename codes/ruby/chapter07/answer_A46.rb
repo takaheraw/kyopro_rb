@@ -1,5 +1,5 @@
 # 二次元の点を扱うクラス
-class Point2D
+class Point2d
   attr_accessor :x, :y
 
   def initialize(x, y)
@@ -8,8 +8,8 @@ class Point2D
   end
 
   # 2 点間の距離を求める関数
-  def dist(p)
-    Math.sqrt((@x - p.x) ** 2 + (@y - p.y) ** 2)
+  def dist(other)
+    ((@x - other.x) ** 2 + (@y - other.y) ** 2) ** 0.5
   end
 end
 
@@ -22,8 +22,8 @@ def play_greedy(n, points)
   visited[0] = true
   p = [0]
   # 貪欲法スタート
-  (1...n).each do |_i|
-    mindist = 10**10 # 現時点での距離の最小
+  (1...n).each do |_|
+    mindist = 10 ** 10 # 現時点での距離の最小
     min_id = -1 # 次はどの都市に移動すればよいか
     # 距離が最小となる都市を探す
     (0...n).each do |j|
@@ -34,20 +34,20 @@ def play_greedy(n, points)
     end
     # 現在位置の更新
     visited[min_id] = true
-    p.append(min_id)
+    p << min_id
     current_place = min_id
   end
   # 最後に訪問する都市
-  p.append(0)
+  p << 0
   p
 end
 
 # 入力
-n = gets.to_i
-points = Array.new(n)
-n.times do |i|
-  x, y = gets.split.map(&:to_i)
-  points[i] = Point2D.new(x, y)
+n = gets.chomp.to_i
+points = []
+n.times do |_|
+  x, y = gets.chomp.split.map(&:to_i)
+  points << Point2d.new(x, y)
 end
 
 # 貪欲法
