@@ -1,15 +1,15 @@
-# 入力
-Q = gets.chomp.to_i # クエリ数
-queries = Array.new(Q) { gets.chomp.split } # クエリの情報（各要素は ["1", 題名を表す文字列] or ["2"] or ["3"]）
+# Input
+q = gets.to_i
+queries = Array.new(q) { gets.split }
 
-# クエリの処理
-S = Array.new
-queries.each do |q|
-  if q[0] == "1"
-    S.push(q[1])
-  elsif q[0] == "2"
-    puts S[-1]
-  elsif q[0] == "3"
-    S.pop
+s = []
+queries.each do |query|
+  case query[0]
+  when "1"
+    s.push(query[1])
+  when "2"
+    puts s.last
+  when "3"
+    s.pop
   end
 end
