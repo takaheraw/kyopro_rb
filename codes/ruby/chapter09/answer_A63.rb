@@ -1,30 +1,33 @@
 # 入力
-N, M = gets.split.map(&:to_i)
-edges = Array.new(M) { gets.split.map(&:to_i) }
-
-# 隣接リストの作成
-G = Array.new(N + 1) { [] }
-edges.each do |a, b|
-  G[a].push(b)
-  G[b].push(a)
+n, m = gets.chomp.split.map(&:to_i)
+a = Array.new(m + 1)
+b = Array.new(m + 1)
+(1..m).each do |i|
+  a[i], b[i] = gets.chomp.split.map(&:to_i)
 end
 
-# 幅優先探索の初期化（dist[i] = ? ではなく dist[i] = -1 で初期化していることに注意）
-dist = Array.new(N + 1, -1)
+# 隣接リストの作成
+g = Array.new(n + 1) { [] }
+(1..m).each do |i|
+  g[a[i]].push(b[i])
+  g[b[i]].push(a[i])
+end
+
+# 幅優先探索の初期化（dist[i] = -1 で初期化していることに注意）
+dist = Array.new(n + 1, -1)
 dist[1] = 0
-Q = []
-Q.push(1)
+q = [1]
 
 # 幅優先探索
-while !Q.empty?
-  pos = Q.shift # キュー Q の先頭要素を取り除き、その値を pos に代入する
-  G[pos].each do |nex|
+until q.empty?
+  pos = q.shift # キュー q の先頭要素を取り除き、その値を pos に代入する
+  g[pos].each do |nex|
     if dist[nex] == -1
       dist[nex] = dist[pos] + 1
-      Q.push(nex)
+      q.push(nex)
     end
   end
 end
 
 # 頂点 1 から各頂点までの最短距離を出力
-(1..N).each { |i| puts dist[i] }
+dist[1..-1].each { |d| puts d }
