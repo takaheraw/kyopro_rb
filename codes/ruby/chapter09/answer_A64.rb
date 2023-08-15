@@ -1,46 +1,76 @@
-# 入力
-N, M = gets.split.map(&:to_i)
-edges = Array.new(M) { gets.split.map(&:to_i) }
+class Edge
+  attr_accessor :to, :cost
 
-# 隣接リストの作成（重み付きグラフなので、各辺について (隣接頂点, 重み) の配列を記録する）
-G = Array.new(N + 1) { [] }
-edges.each do |a, b, c|
-  G[a].push([b, c])
-  G[b].push([a, c])
+  def initialize(to, cost)
+    @to = to
+    @cost = cost
+  end
 end
 
-# 配列・キューの初期化（キューには [距離, 頂点番号] の配列を記録する）
-INF = 10 ** 10
-kakutei = Array.new(N + 1, false)
-cur = Array.new(N + 1, INF)
+class State
+  include Comparable
+  attr_accessor :dist, :pos
+
+  def initialize(dist, pos)
+    @dist = dist
+    @pos = pos
+  end
+
+  def <=>(other)
+    self.dist <=> other.dist
+  end
+end
+
+# 入力
+n, m = gets.chomp.split.map(&:to_i)
+a = Array.new(m + 1)
+b = Array.new(m + 1)
+c = Array.new(m + 1)
+
+(1..m).each do |i|
+  a[i], b[i], c[i] = gets.chomp.split.map(&:to_i)
+end
+
+# 隣接リストの作成
+g = Array.new(n + 1) { [] }
+(1..m).each do |i|
+  g[a[i]].push(Edge.new(b[i], c[i]))
+  g[b[i]].push(Edge.new(a[i], c[i]))
+end
+
+# 配列の初期化
+inf = 2_000_000_000
+kakutei = Array.new(n + 1, false)
+cur = Array.new(n + 1, inf)
+
+# スタート地点をキューに追加
 cur[1] = 0
-Q = []
-Q.push([cur[1], 1])
+q = [State.new(cur[1], 1)]
 
 # ダイクストラ法
-while !Q.empty?
-  # 次に確定させるべき頂点を求める
-  # （ここでは、キュー Q の最小要素を取り除き、その要素の 2 番目の値（頂点番号）を pos に代入する）
-  pos = Q.min_by { |distance, vertex| distance }[1]
-  Q.delete_if { |distance, vertex| vertex == pos }
+until q.empty?
+  # キューから最小要素を取り出す
+  state = q.min
+  q.delete(state)
+
+  pos = state.pos
 
   # Q の最小要素が「既に確定した頂点」の場合
   next if kakutei[pos]
 
   # cur[x] の値を更新する
   kakutei[pos] = true
-  G[pos].each do |e|
-    # 書籍内のコードとは pos = e[0], cost = e[1] で対応している
-    if cur[e[0]] > cur[pos] + e[1]
-      cur[e[0]] = cur[pos] + e[1]
-      Q.push([cur[e[0]], e[0]])
+  g[pos].each do |e|
+    if cur[e.to] > cur[pos] + e.cost
+      cur[e.to] = cur[pos] + e.cost
+      q.push(State.new(cur[e.to], e.to))
     end
   end
 end
 
 # 答えを出力
-(1..N).each do |i|
-  if cur[i] != INF
+(1..n).each do |i|
+  if cur[i] != inf
     puts cur[i]
   else
     puts "-1"
