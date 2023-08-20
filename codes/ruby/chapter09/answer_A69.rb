@@ -1,4 +1,4 @@
-class MaxFlowEdge
+class FlowEdge
   attr_accessor :to, :cap, :rev
 
   def initialize(to, cap, rev)
@@ -8,57 +8,71 @@ class MaxFlowEdge
   end
 end
 
-def dfs(pos, goal, f, g, used)
-  return f if pos == goal
+class MaximumFlow
+  INF = 1_000_000_000
 
-  used[pos] = true
-  g[pos].each do |e|
-    if e.cap > 0 && !used[e.to]
-      flow = dfs(e.to, goal, [f, e.cap].min, g, used)
-      if flow >= 1
-        e.cap -= flow
-        g[e.to][e.rev].cap += flow
-        return flow
-      end
-    end
+  def initialize(n)
+    @n = n
+    @used = Array.new(n + 1, false)
+    @g = Array.new(n + 1) { [] }
   end
-  0
-end
 
-def maxflow(n, s, t, edges)
-  g = Array.new(n + 1) { [] }
-  edges.each do |a, b, c|
-    g[a] << MaxFlowEdge.new(b, c, g[b].size)
-    g[b] << MaxFlowEdge.new(a, 0, g[a].size - 1)
+  def add_edge(a, b, c)
+    @g[a] << FlowEdge.new(b, c, @g[b].size)
+    @g[b] << FlowEdge.new(a, 0, @g[a].size - 1)
   end
-  inf = 10**10
-  total_flow = 0
-  loop do
-    used = Array.new(n + 1, false)
-    f = dfs(s, t, inf, g, used)
-    if f > 0
-      total_flow += f
-    else
-      break
+
+  def dfs(pos, goal, f)
+    return f if pos == goal
+
+    @used[pos] = true
+    @g[pos].each_with_index do |e, i|
+      next if e.cap == 0 || @used[e.to]
+
+      flow = dfs(e.to, goal, [f, e.cap].min)
+      next if flow == 0
+
+      e.cap -= flow
+      @g[e.to][e.rev].cap += flow
+      return flow
     end
+
+    0
   end
-  total_flow
+
+  def max_flow(s, t)
+    total_flow = 0
+    loop do
+      @used.fill(false)
+      flow = dfs(s, t, INF)
+      break if flow == 0
+      total_flow += flow
+    end
+    total_flow
+  end
 end
 
 n = gets.to_i
-c = Array.new(n) { gets.chomp }
+c = Array.new(n + 1)
 
-edges = []
-n.times do |i|
-  n.times do |j|
-    edges << [i + 1, n + j + 1, 1] if c[i][j] == '#'
+(1..n).each do |i|
+  c[i] = gets.chomp
+end
+
+max_flow_obj = MaximumFlow.new(2 * n + 2)
+
+(1..n).each do |i|
+  (1..n).each do |j|
+    if c[i][j - 1] == '#'
+      max_flow_obj.add_edge(i, j + n, 1)
+    end
   end
 end
 
-n.times do |i|
-  edges << [2 * n + 1, i + 1, 1]
-  edges << [n + i + 1, 2 * n + 2, 1]
+(1..n).each do |i|
+  max_flow_obj.add_edge(2 * n + 1, i, 1)
+  max_flow_obj.add_edge(i + n, 2 * n + 2, 1)
 end
 
-answer = maxflow(2 * n + 2, 2 * n + 1, 2 * n + 2, edges)
+answer = max_flow_obj.max_flow(2 * n + 1, 2 * n + 2)
 puts answer
