@@ -1,42 +1,61 @@
-# 入力
-N, M = gets.split.map(&:to_i)
-roads = Array.new(M) { gets.split.map(&:to_i) }
+class Edge
+  attr_accessor :to, :cost
 
-# グラフの作成
-G = Array.new(N + 1) { [] }
-roads.each do |a, b, c, d|
-  if d == 1
-    G[a] << [b, 10000 * c - 1]
-    G[b] << [a, 10000 * c - 1]
-  else
-    G[a] << [b, 10000 * c]
-    G[b] << [a, 10000 * c]
+  def initialize(to, cost)
+    @to = to
+    @cost = cost
   end
 end
 
-# ダイクストラ法
-INF = 10 ** 10
-kakutei = Array.new(N + 1, false)
-cur = Array.new(N + 1, INF)
-cur[1] = 0
-Q = [[cur[1], 1]]
+class State
+  attr_accessor :dist, :pos
 
-while !Q.empty?
-  Q.sort! { |a, b| a[0] <=> b[0] } # 昇順にソート
-  cost, pos = Q.shift
+  include Comparable
+
+  def initialize(dist, pos)
+    @dist = dist
+    @pos = pos
+  end
+
+  def <=>(other)
+    self.dist <=> other.dist
+  end
+end
+
+n, m = gets.split.map(&:to_i)
+edges = Array.new(n + 1) { [] }
+(1..m).each do
+  a, b, c, d = gets.split.map(&:to_i)
+  if d == 1
+    edges[a].push(Edge.new(b, 10000 * c - 1))
+    edges[b].push(Edge.new(a, 10000 * c - 1))
+  else
+    edges[a].push(Edge.new(b, 10000 * c))
+    edges[b].push(Edge.new(a, 10000 * c))
+  end
+end
+
+INF = (1 << 60)
+cur = Array.new(n + 1, INF)
+kakutei = Array.new(n + 1, false)
+cur[1] = 0
+queue = []
+queue.push(State.new(cur[1], 1))
+
+until queue.empty?
+  state = queue.min
+  queue.delete(state)
+  pos = state.pos
   next if kakutei[pos]
   kakutei[pos] = true
-  G[pos].each do |e|
-    if cur[e[0]] > cur[pos] + e[1]
-      cur[e[0]] = cur[pos] + e[1]
-      Q << [cur[e[0]], e[0]]
+  edges[pos].each do |edge|
+    if cur[edge.to] > cur[pos] + edge.cost
+      cur[edge.to] = cur[pos] + edge.cost
+      queue.push(State.new(cur[edge.to], edge.to))
     end
   end
 end
 
-# 答えを求めて出力
-# マラソンコースの距離：cur[N] / 10000 を小数点以下切り上げた値
-# コース上の木の数：cur[N] と distance * 10000 の差分
-distance = (cur[N] + 9999) / 10000
-num_trees = distance * 10000 - cur[N]
+distance = (cur[n] + 9999) / 10000
+num_trees = distance * 10000 - cur[n]
 puts "#{distance} #{num_trees}"
