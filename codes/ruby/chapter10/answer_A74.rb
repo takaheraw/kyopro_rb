@@ -1,29 +1,28 @@
-# 入力
-N = gets.to_i
-P = Array.new(N) { gets.split.map(&:to_i) }
+n = gets.to_i
+p = Array.new(n + 1) { Array.new(n + 1) }
+(1..n).each do |i|
+  p[i][1..n] = gets.split.map(&:to_i)
+end
 
-# 「転倒数を求める問題」2 つに分解する
-X = Array.new(N)
-Y = Array.new(N)
-N.times do |i|
-  N.times do |j|
-    if P[i][j] != 0
-      X[i] = P[i][j]
-      Y[j] = P[i][j]
+x = Array.new(n + 1)
+y = Array.new(n + 1)
+(1..n).each do |i|
+  (1..n).each do |j|
+    unless p[i][j].zero?
+      x[i] = p[i][j]
+      y[j] = p[i][j]
     end
   end
 end
 
-# 転倒数を求める関数
-def inversion(ar)
-  answer = 0
-  ar.each_with_index do |a, i|
-    ar[(i + 1)...ar.length].each do |b|
-      answer += 1 if a > b
-    end
+inversion_x = 0
+inversion_y = 0
+(1..n).each do |i|
+  ((i + 1)..n).each do |j|
+    inversion_x += 1 if x[i] > x[j]
+    inversion_y += 1 if y[i] > y[j]
   end
-  answer
 end
 
-# 答えを出力
-puts inversion(X) + inversion(Y)
+# 出力
+puts inversion_x + inversion_y
