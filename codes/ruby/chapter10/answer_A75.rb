@@ -1,27 +1,32 @@
-# 入力
-N = gets.to_i
-problems = Array.new(N) { gets.split.map(&:to_i) } # タプル (T[i], D[i]) が N 個並んだ配列になる
+n = gets.to_i
+t = []
+d = []
+n.times do
+  ti, di = gets.split.map(&:to_i)
+  t << ti
+  d << di
+end
 
-# D[i] の小さい順に並べ替える
-problems.sort_by! { |p| p[1] }
+# D の小さい順に並べ替える
+problems = d.zip(t).sort
+d, t = problems.map { |pair| pair[0] }, problems.map { |pair| pair[1] }
 
 # 動的計画法：前準備
-MAX_D = problems.map { |p| p[1] }.max # D[i] の最大値（書籍内のコードでは「1440」という定数を使っているが、ここでは代わりに MAX_D を使うことにする）
-dp = Array.new(N + 1) { Array.new(MAX_D + 1, -(10 ** 10)) }
+max_d = d.max
+dp = Array.new(n + 1) { Array.new(max_d + 1, -1_000_000_000) }
 
 # 動的計画法
 dp[0][0] = 0
-N.times do |i|
-  t, d = problems[i] # 書籍中の T[i], D[i] に対応
-  (MAX_D + 1).times do |j|
-    if j > d || j < t
-      dp[i + 1][j] = dp[i][j]
+(1..n).each do |i|
+  (0..max_d).each do |j|
+    if j > d[i - 1] || j < t[i - 1]
+      dp[i][j] = dp[i - 1][j]
     else
-      dp[i + 1][j] = [dp[i][j], dp[i][j - t] + 1].max
+      dp[i][j] = [dp[i - 1][j], dp[i - 1][j - t[i - 1]] + 1].max
     end
   end
 end
 
-# 答えを出力
-answer = dp[N].max
+# 答えを求めて出力
+answer = dp[n].max
 puts answer
