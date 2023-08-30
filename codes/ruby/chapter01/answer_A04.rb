@@ -1,10 +1,9 @@
 # 入力
-N = gets.to_i
+n = gets.to_i
 
-# 上の桁から順番に「2 進法に変換した値」を求める
-for x in [9,8,7,6,5,4,3,2,1,0] do
-	wari = (2 ** x)
-	print((N / wari) % 2)
+# 上の桁から順番に「2進法に変換した値」を求める
+(9).downto(0) do |x|
+  wari = 1 << x # 2のx乗
+  print (n / wari) % 2 # 割り算の結果に応じて0または1の出力
 end
-
-puts
+puts # 最後に改行する
