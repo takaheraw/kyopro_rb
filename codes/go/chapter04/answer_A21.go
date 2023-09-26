@@ -5,44 +5,36 @@ import (
 )
 
 func main() {
-	// 入力
-	var n int
-	fmt.Scan(&n)
-	p := make([]int, n+1)
-	a := make([]int, n+1)
-
-	for i := 1; i <= n; i++ {
-		fmt.Scan(&p[i])
-		fmt.Scan(&a[i])
+	var N int
+	fmt.Scan(&N)
+	P := make([]int, N+1)
+	A := make([]int, N+1)
+	for i := 1; i <= N; i++ {
+		fmt.Scan(&P[i], &A[i])
 	}
 
-	// 動的計画法
-	dp := make([][]int, n+2)
-	for i := 0; i <= n+1; i++ {
-		dp[i] = make([]int, n+2)
+	dp := make([][]int, N+1)
+	for i := 0; i <= N; i++ {
+		dp[i] = make([]int, N+1)
 	}
+	dp[1][N] = 0
+	for LEN := N - 2; LEN >= 0; LEN-- {
+		for l := 1; l <= N-LEN; l++ {
+			r := l + LEN
 
-	// 動的計画法のループ
-	for lEN := 1; lEN <= n; lEN++ {
-		for l := 1; l <= n-lEN+1; l++ {
-			r := l + lEN - 1
-
-			// score1 の値（l-1 番目のブロックを取り除くときの得点）を求める
 			score1 := 0
-			if l >= 2 && l <= p[l-1] && p[l-1] <= r {
-				score1 = a[l-1]
+			if l >= 2 && l <= P[l-1] && P[l-1] <= r {
+				score1 = A[l-1]
 			}
 
-			// score2 の値（r+1 番目のブロックを取り除くときの得点）を求める
 			score2 := 0
-			if r <= n && l <= p[r] && p[r] <= r {
-				score2 = a[r]
+			if r <= N-1 && l <= P[r+1] && P[r+1] <= r {
+				score2 = A[r+1]
 			}
 
-			// dp[l][r] を求める
 			if l == 1 {
 				dp[l][r] = dp[l][r+1] + score2
-			} else if r == n {
+			} else if r == N {
 				dp[l][r] = dp[l-1][r] + score1
 			} else {
 				dp[l][r] = max(dp[l-1][r]+score1, dp[l][r+1]+score2)
@@ -50,9 +42,8 @@ func main() {
 		}
 	}
 
-	// 出力
 	answer := 0
-	for i := 1; i <= n; i++ {
+	for i := 1; i <= N; i++ {
 		answer = max(answer, dp[i][i])
 	}
 	fmt.Println(answer)
