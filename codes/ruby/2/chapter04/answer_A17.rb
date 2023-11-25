@@ -22,7 +22,7 @@ while true
            end
 end
 answer.reverse!
-
 answer2 = answer.map(&:to_s)
+
 puts answer.size
 puts answer2.join(' ')
