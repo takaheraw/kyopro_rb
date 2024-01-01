@@ -1,6 +1,32 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
+
+func quicksort(arr []int) []int {
+	if len(arr) <= 1 {
+		return arr
+	}
+
+	pivot := arr[rand.Intn(len(arr))]
+
+	var less, equal, greater []int
+
+	for _, x := range arr {
+		switch {
+		case x < pivot:
+			less = append(less, x)
+		case x == pivot:
+			equal = append(equal, x)
+		case x > pivot:
+			greater = append(greater, x)
+		}
+	}
+
+	return append(append(quicksort(less), equal...), quicksort(greater)...)
+}
 
 func main() {
 	fmt.Println("累積和")
@@ -18,4 +44,11 @@ func main() {
 		l, r := pair[0], pair[1]
 		fmt.Println(accumulates[r] - accumulates[l-1])
 	}
+
+	fmt.Println("クイックソート")
+
+	arrayToSort := []int{3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5}
+	sortedArray := quicksort(arrayToSort)
+
+	fmt.Println(sortedArray)
 }
