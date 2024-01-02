@@ -28,6 +28,23 @@ func quicksort(arr []int) []int {
 	return append(append(quicksort(less), equal...), quicksort(greater)...)
 }
 
+func binarySearch(arr []int, target int) int {
+	low, high := 0, len(arr)-1
+
+	for low <= high {
+		mid := (low + high) / 2
+		if arr[mid] == target {
+			return mid
+		} else if arr[mid] < target {
+			low = mid + 1
+		} else {
+			high = mid - 1
+		}
+	}
+
+	return -1 // ターゲットが見つからなかった場合は-1を返す（Rubyのnilに相当）
+}
+
 func main() {
 	fmt.Println("累積和")
 
@@ -51,4 +68,11 @@ func main() {
 	sortedArray := quicksort(arrayToSort)
 
 	fmt.Println(sortedArray)
+
+	fmt.Println("二分探索")
+
+	target := 5
+
+	index := binarySearch(sortedArray, target)
+	fmt.Println(index)
 }
