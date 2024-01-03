@@ -45,6 +45,13 @@ func binarySearch(arr []int, target int) int {
 	return -1 // ターゲットが見つからなかった場合は-1を返す（Rubyのnilに相当）
 }
 
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
 func main() {
 	fmt.Println("累積和")
 
@@ -75,4 +82,20 @@ func main() {
 
 	index := binarySearch(sortedArray, target)
 	fmt.Println(index)
+
+	fmt.Println("動的計画法")
+
+	roomCount := 5
+	pattern1 := []int{2, 4, 1, 3}
+	pattern2 := []int{5, 3, 7}
+
+	dp := make([]int, roomCount+1)
+	dp[1] = 0
+	dp[2] = pattern1[0]
+
+	for i := 3; i <= roomCount; i++ {
+		dp[i] = min(dp[i-1]+pattern1[i-2], dp[i-2]+pattern2[i-3])
+	}
+
+	fmt.Println(dp[roomCount])
 }
