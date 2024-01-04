@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 )
 
@@ -52,6 +53,16 @@ func min(a, b int) int {
 	return b
 }
 
+func isPrime(n int) bool {
+	limit := int(math.Sqrt(float64(n)))
+	for i := 2; i <= limit; i++ {
+		if n%i == 0 {
+			return false
+		}
+	}
+	return true
+}
+
 func main() {
 	fmt.Println("累積和")
 
@@ -98,4 +109,8 @@ func main() {
 	}
 
 	fmt.Println(dp[roomCount])
+
+	fmt.Println("素数")
+	fmt.Println(isPrime(17))
+	fmt.Println(isPrime(35))
 }
