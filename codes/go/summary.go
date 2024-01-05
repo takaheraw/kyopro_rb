@@ -63,6 +63,22 @@ func isPrime(n int) bool {
 	return true
 }
 
+func gcd(a, b int) int {
+	for a >= 1 && b >= 1 {
+		if a >= b {
+			a = a % b
+		} else {
+			b = b % a
+		}
+	}
+
+	if a >= 1 {
+		return a
+	}
+
+	return b
+}
+
 func main() {
 	fmt.Println("累積和")
 
@@ -113,4 +129,8 @@ func main() {
 	fmt.Println("素数")
 	fmt.Println(isPrime(17))
 	fmt.Println(isPrime(35))
+
+	fmt.Println("最大公約数")
+	fmt.Println(gcd(900, 100))
+	fmt.Println(gcd(117, 432))
 }
