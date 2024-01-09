@@ -74,3 +74,20 @@ IO.puts "二分探索"
 target = 5
 index = BinarySearch.search(sorted_array, target)
 IO.puts index
+
+IO.puts "動的計画法"
+room_count = 5
+pattern1 = [2, 4, 1, 3]
+pattern2 = [5, 3, 7]
+
+dp = Enum.reduce(1..room_count, %{}, fn i, acc ->
+  case i do
+    1 -> Map.put(acc, i, 0)
+    2 -> Map.put(acc, i, Enum.at(pattern1, 0))
+    _ ->
+      dp_i = [acc[i - 1] + Enum.at(pattern1, i - 2), acc[i - 2] + Enum.at(pattern2, i - 3)] |> Enum.min()
+      Map.put(acc, i, dp_i)
+  end
+end)
+
+IO.puts dp[room_count]
