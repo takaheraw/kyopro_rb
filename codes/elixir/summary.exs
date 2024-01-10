@@ -91,3 +91,16 @@ dp = Enum.reduce(1..room_count, %{}, fn i, acc ->
 end)
 
 IO.puts dp[room_count]
+
+
+defmodule Prime do
+  def is_prime(n) do
+    limit = :math.sqrt(n) |> round() |> :erlang.trunc()
+    Enum.all?(2..limit, fn i -> rem(n, i) != 0 end)
+  end
+end
+
+IO.puts("素数")
+IO.puts Prime.is_prime(17)
+IO.puts Prime.is_prime(35)
+IO.puts Prime.is_prime(97)
