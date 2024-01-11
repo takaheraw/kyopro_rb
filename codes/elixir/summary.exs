@@ -92,7 +92,6 @@ end)
 
 IO.puts dp[room_count]
 
-
 defmodule Prime do
   def is_prime(n) do
     limit = :math.sqrt(n) |> round() |> :erlang.trunc()
@@ -104,3 +103,17 @@ IO.puts("素数")
 IO.puts Prime.is_prime(17)
 IO.puts Prime.is_prime(35)
 IO.puts Prime.is_prime(97)
+
+defmodule Gcd do
+  defmodule Math do
+    def gcd(a, b) when a >= 1 and b >= 1, do: gcd(a, b, min(a, b))
+
+    defp gcd(a, _b, 0), do: a
+    defp gcd(a, b, min) when rem(a, min) == 0 and rem(b, min) == 0, do: min
+    defp gcd(a, b, min), do: gcd(a, b, min - 1)
+  end
+end
+
+IO.puts("最大公約数")
+IO.puts(Gcd.Math.gcd(900, 100))
+IO.puts(Gcd.Math.gcd(117, 432))
