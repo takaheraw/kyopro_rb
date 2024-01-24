@@ -11,3 +11,22 @@ const targets: [number, number][] = [[2, 4], [4, 13]];
 targets.forEach(([l, r]) => {
   console.log(accumulates[r] - accumulates[l - 1]);
 });
+
+
+console.log('クイックソート');
+function quicksort(arr: number[]): number[] {
+  if (arr.length <= 1) {
+    return arr;
+  }
+
+  const pivot: number = arr[Math.floor(Math.random() * arr.length)];
+  const less: number[] = arr.filter(x => x < pivot);
+  const equal: number[] = arr.filter(x => x === pivot);
+  const greater: number[] = arr.filter(x => x > pivot);
+
+  return [...quicksort(less), ...equal, ...quicksort(greater)];
+}
+
+const arrayToSort: number[] = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5];
+const sortedArray: number[] = quicksort(arrayToSort);
+console.log(sortedArray);
