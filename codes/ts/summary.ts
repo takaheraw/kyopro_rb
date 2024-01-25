@@ -30,3 +30,28 @@ function quicksort(arr: number[]): number[] {
 const arrayToSort: number[] = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5];
 const sortedArray: number[] = quicksort(arrayToSort);
 console.log(sortedArray);
+
+console.log('二分探索');
+
+function binarySearch(arr: number[], target: number): number | undefined {
+  let low = 0;
+  let high = arr.length - 1;
+
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+
+    if (arr[mid] === target) {
+      return mid;
+    } else if (arr[mid] < target) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+
+  return undefined;
+}
+
+const target = 5;
+const index = binarySearch(sortedArray, target);
+console.log(index);
