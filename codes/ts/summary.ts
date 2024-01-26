@@ -31,8 +31,8 @@ const arrayToSort: number[] = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5];
 const sortedArray: number[] = quicksort(arrayToSort);
 console.log(sortedArray);
 
-console.log('二分探索');
 
+console.log('二分探索');
 function binarySearch(arr: number[], target: number): number | undefined {
   let low = 0;
   let high = arr.length - 1;
@@ -55,3 +55,20 @@ function binarySearch(arr: number[], target: number): number | undefined {
 const target = 5;
 const index = binarySearch(sortedArray, target);
 console.log(index);
+
+
+console.log('動的計画法');
+const roomCount: number = 5;
+const pattern1: number[] = [2, 4, 1, 3];
+const pattern2: number[] = [5, 3, 7];
+
+const dp: number[] = new Array(roomCount + 1);
+dp[1] = 0;
+dp[2] = pattern1[0];
+
+
+for (let i = 3; i <= roomCount; i++) {
+  dp[i] = Math.min(dp[i - 1] + pattern1[i - 2], dp[i - 2] + pattern2[i - 3]);
+}
+
+console.log(dp[roomCount]);
