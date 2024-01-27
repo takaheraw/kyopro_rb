@@ -72,3 +72,18 @@ for (let i = 3; i <= roomCount; i++) {
 }
 
 console.log(dp[roomCount]);
+
+console.log('素数');
+
+function isPrime(n: number): boolean {
+  const limit = Math.sqrt(n);
+  for (let i = 2; i <= limit; i++) {
+    if (n % i === 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+console.log(isPrime(17));
+console.log(isPrime(35));
