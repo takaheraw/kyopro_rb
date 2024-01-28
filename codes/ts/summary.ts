@@ -87,3 +87,20 @@ function isPrime(n: number): boolean {
 
 console.log(isPrime(17));
 console.log(isPrime(35));
+
+console.log('最大公約数');
+
+function gcd(a: number, b: number): number {
+  while (a >= 1 && b >= 1) {
+    if (a >= b) {
+      a = a % b;
+    } else {
+      b = b % a;
+    }
+  }
+
+  return a >= 1 ? a : b;
+}
+
+console.log(gcd(900, 100));
+console.log(gcd(117, 432));
